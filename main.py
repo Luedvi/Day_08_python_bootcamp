@@ -20,32 +20,22 @@ def encrypt(plain_text, shift_amount):
     # https://stackoverflow.com/questions/176918/finding-the-index-of-an-item-in-a-list
 
     # 🐛Bug alert: What happens if you try to encode the word 'civilization'?🐛
-    indices = []
     shifted_indices = []
     cypher_message = []
-
     for index in range(len(plain_text)):
         if plain_text[index] in alphabet:
-            indices.append(alphabet.index(plain_text[index]))
+            shifted_indices.append(alphabet.index(plain_text[index]) + shift_amount)
         else:
-            indices.append(plain_text[index])
-
-    for num in range(len(plain_text)):
-        plain_index = indices[num]
-        if plain_text[num] in alphabet:
-            shifted_indices.append(plain_index + shift_amount)
-        else:
-            shifted_indices.append(plain_index)
+            shifted_indices.append(plain_text[index])
 
     for item in shifted_indices:
         if type(item) == type("string"):
             cypher_message.append(item)
         elif item > 25:
-            cypher_message.append(alphabet[item % 26])
+            cypher_message.append(alphabet[item % 26])  # we use the modulo operator to avoid "IndexError: list index out of range" in words like civilization
         else:
             cypher_message.append(alphabet[item])
 
-    print(indices)
     print(shifted_indices)
     print(cypher_message)
     print(f'The encoded text is: {"".join(cypher_message)}')
